@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaceRecognition | 人脸识别考勤系统</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">FaceRecognition</div>
+    <nav>
+      <a href="#features">功能</a>
+      <a href="#architecture">架构</a>
+      <a href="#run">运行</a>
+      <a href="https://github.com/phantom725/FaceRecognition" target="_blank" rel="noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Python · Flask · OpenCV · SQLite</p>
+        <h1>基于深度学习的人脸识别考勤系统</h1>
+        <p class="lead">
+          面向计算机综合项目实践的本地 Web 系统，完成从人员管理、人脸录入、特征提取到识别签到和考勤导出的完整流程。
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/phantom725/FaceRecognition" target="_blank" rel="noreferrer">查看源码</a>
+          <a class="button secondary" href="#run">本地运行</a>
+        </div>
+      </div>
+      <div class="dashboard-preview" aria-label="系统界面预览">
+        <div class="preview-header">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="preview-grid">
+          <div class="preview-metric"><small>人员总数</small><strong>32</strong></div>
+          <div class="preview-metric"><small>人脸样本</small><strong>86</strong></div>
+          <div class="preview-metric"><small>今日签到</small><strong>28</strong></div>
+        </div>
+        <div class="preview-table">
+          <div class="row head"><span>时间</span><span>人员</span><span>状态</span></div>
+          <div class="row"><span>08:12</span><span>2023302111132</span><b>success</b></div>
+          <div class="row"><span>08:17</span><span>2023302111138</span><b>success</b></div>
+          <div class="row"><span>08:23</span><span>unknown</span><em>review</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>系统功能</h2>
+      <div class="feature-grid">
+        <article>
+          <h3>人员管理</h3>
+          <p>维护学生学号、姓名、班级和备注，为后续人脸样本绑定人员身份。</p>
+        </article>
+        <article>
+          <h3>人脸录入</h3>
+          <p>支持上传图片或摄像头拍照，检测单张人脸后保存特征向量。</p>
+        </article>
+        <article>
+          <h3>识别签到</h3>
+          <p>通过 YuNet 检测人脸，使用 SFace 提取特征，并按余弦相似度完成匹配。</p>
+        </article>
+        <article>
+          <h3>考勤导出</h3>
+          <p>按人员和日期查询签到记录，并导出 CSV 用于报告和演示。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture" class="section split">
+      <div>
+        <h2>技术路线</h2>
+        <p>
+          项目参考开源人脸识别考勤系统的业务流程，但避开旧版 TensorFlow 1.x 和 dlib 依赖，使用 Python 3.11 兼容性更好的 OpenCV ONNX 深度模型。
+        </p>
+      </div>
+      <ol class="steps">
+        <li>浏览器采集图片或摄像头帧</li>
+        <li>Flask 接收图片并调用识别引擎</li>
+        <li>YuNet 检测人脸并完成质量过滤</li>
+        <li>SFace 提取特征向量</li>
+        <li>SQLite 保存人员、样本和考勤记录</li>
+      </ol>
+    </section>
+
+    <section id="run" class="section run-panel">
+      <h2>本地运行完整功能</h2>
+      <p>Netlify 页面用于公网展示。完整摄像头录入、OpenCV 推理和 SQLite 写入功能需要在本地 Python 环境运行。</p>
+      <pre><code>git clone https://github.com/phantom725/FaceRecognition.git
+cd FaceRecognition
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python scripts\download_models.py
+python app.py</code></pre>
+      <p class="local-url">启动后访问 <code>http://127.0.0.1:5000</code></p>
+    </section>
+  </main>
+
+  <footer>
+    <span>FaceRecognition</span>
+    <span>课程实践项目 · 本地识别系统</span>
+  </footer>
+</body>
+</html>
+
