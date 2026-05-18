@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}人脸识别考勤系统{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">人脸识别考勤系统</a>
+    <nav class="nav">
+      <a href="{{ url_for('index') }}">仪表盘</a>
+      <a href="{{ url_for('people_page') }}">人员管理</a>
+      <a href="{{ url_for('register_page') }}">人脸录入</a>
+      <a href="{{ url_for('recognize_page') }}">识别签到</a>
+      <a href="{{ url_for('attendance_page') }}">考勤记录</a>
+    </nav>
+  </header>
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+

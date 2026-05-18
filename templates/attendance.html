@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}考勤记录 - 人脸识别考勤系统{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>考勤记录</h1>
+    <p>筛选识别日志并导出 CSV。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <form class="filter-row" method="get">
+    <label>人员
+      <select name="person_id">
+        <option value="">全部</option>
+        {% for person in people %}
+        <option value="{{ person.id }}" {% if selected_person_id == person.id %}selected{% endif %}>{{ person.student_no }} - {{ person.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>日期<input type="date" name="day" value="{{ selected_day }}"></label>
+    <button class="button" type="submit">筛选</button>
+    <a class="button secondary" href="{{ url_for('export_attendance', person_id=selected_person_id or '', day=selected_day) }}">导出 CSV</a>
+    <button class="button danger" type="button" data-clear-attendance>清空记录</button>
+  </form>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>姓名</th>
+          <th>学号</th>
+          <th>班级</th>
+          <th>状态</th>
+          <th>相似度</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in logs %}
+        <tr>
+          <td>{{ row.checked_in_at }}</td>
+          <td>{{ row.name or "未知人员" }}</td>
+          <td>{{ row.student_no or "-" }}</td>
+          <td>{{ row.class_name or "-" }}</td>
+          <td><span class="status {{ row.status }}">{{ row.status }}</span></td>
+          <td>{{ "%.4f"|format(row.similarity) if row.similarity is not none else "-" }}</td>
+          <td>{{ row.message }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="empty">没有符合条件的记录。</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

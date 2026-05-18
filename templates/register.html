@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}人脸录入 - 人脸识别考勤系统{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>人脸录入</h1>
+    <p>为指定人员采集一张清晰正脸，系统会提取并保存特征向量。</p>
+  </div>
+  {% if not model_status.ready %}
+  <div class="notice warning">模型未就绪，请先下载 ONNX 模型。</div>
+  {% endif %}
+</section>
+
+<section class="panel capture-layout">
+  <form id="register-form" class="form" enctype="multipart/form-data">
+    <h2>录入样本</h2>
+    <label>选择人员
+      <select name="person_id" required>
+        <option value="">请选择</option>
+        {% for person in people %}
+        <option value="{{ person.id }}">{{ person.student_no }} - {{ person.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>上传图片<input name="image" type="file" accept="image/*"></label>
+    <input type="hidden" name="image_data" id="register-image-data">
+    <div class="button-row">
+      <button class="button secondary" type="button" data-camera-start="register">开启摄像头</button>
+      <button class="button secondary" type="button" data-camera-shot="register">拍照</button>
+      <button class="button" type="submit">保存样本</button>
+    </div>
+    <p class="form-message" id="register-message"></p>
+  </form>
+
+  <div class="camera-box">
+    <video id="register-video" autoplay playsinline muted></video>
+    <canvas id="register-canvas"></canvas>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+{% endblock %}
+

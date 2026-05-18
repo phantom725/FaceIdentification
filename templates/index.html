@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}仪表盘 - 人脸识别考勤系统{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>仪表盘</h1>
+    <p>查看人员、人脸样本和今日签到概况。</p>
+  </div>
+  {% if not model_status.ready %}
+  <div class="notice warning">模型未就绪，请先运行 <code>python scripts\download_models.py</code></div>
+  {% endif %}
+</section>
+
+<section class="metric-grid">
+  <div class="metric"><span>人员总数</span><strong>{{ stats.people_count }}</strong></div>
+  <div class="metric"><span>人脸样本</span><strong>{{ stats.face_count }}</strong></div>
+  <div class="metric"><span>今日签到</span><strong>{{ stats.today_count }}</strong></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>最近识别记录</h2>
+    <div class="button-row">
+      <button class="button danger" type="button" data-clear-attendance>清空记录</button>
+      <a class="button secondary" href="{{ url_for('attendance_page') }}">查看全部</a>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>人员</th>
+          <th>状态</th>
+          <th>相似度</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in stats.recent %}
+        <tr>
+          <td>{{ row.checked_in_at }}</td>
+          <td>{{ row.name or "未知人员" }}</td>
+          <td><span class="status {{ row.status }}">{{ row.status }}</span></td>
+          <td>{{ "%.4f"|format(row.similarity) if row.similarity is not none else "-" }}</td>
+          <td>{{ row.message }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty">还没有识别记录。</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

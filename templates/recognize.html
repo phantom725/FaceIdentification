@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}识别签到 - 人脸识别考勤系统{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>识别签到</h1>
+    <p>开启摄像头后，先完成动作挑战，再由系统自动识别并签到。</p>
+  </div>
+  <div class="notice">当前阈值：{{ "%.3f"|format(threshold) }}</div>
+</section>
+
+<section class="panel capture-layout">
+  <div id="live-recognize-panel" class="form">
+    <h2>动态识别</h2>
+    <div class="button-row">
+      <button class="button secondary" type="button" data-camera-start="recognize">开启摄像头</button>
+      <button class="button" type="button" id="liveness-live-start">开启动态识别</button>
+      <button class="button danger" type="button" id="liveness-live-stop" disabled>停止识别</button>
+    </div>
+    <div class="live-status" id="live-status">动态识别未启动。</div>
+    <div class="result-card" id="liveness-challenge">等待动作挑战。</div>
+    <div class="result-card" id="recognize-result">等待识别。</div>
+  </div>
+
+  <div class="camera-box">
+    <video id="recognize-video" class="mirror-preview" autoplay playsinline muted></video>
+    <canvas id="recognize-canvas"></canvas>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+<script src="{{ url_for('static', filename='js/live_recognition.js') }}"></script>
+{% endblock %}
