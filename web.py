@@ -241,7 +241,7 @@ def read_image_bytes() -> bytes:
         if "," in image_data:
             image_data = image_data.split(",", 1)[1]
         return base64.b64decode(image_data)
-    raise FaceDetectionError("请上传图片或使用摄像头拍照。")
+    raise FaceDetectionError("请上传图片或使用摄像头拍照")
 
 
 def save_image_bytes(image_bytes: bytes, category: str) -> str:
