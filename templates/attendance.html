@@ -14,15 +14,19 @@
       <select name="person_id">
         <option value="">全部</option>
         {% for person in people %}
-        <option value="{{ person.id }}" {% if selected_person_id == person.id %}selected{% endif %}>{{ person.student_no }} - {{ person.name }}</option>
+        <option value="{{ person.id }}" {% if selected_person_id==person.id %}selected{% endif %}>{{ person.student_no
+          }} - {{ person.name }}</option>
         {% endfor %}
       </select>
     </label>
     <label>日期<input type="date" name="day" value="{{ selected_day }}"></label>
     <button class="button" type="submit">筛选</button>
-    <a class="button secondary" href="{{ url_for('export_attendance', person_id=selected_person_id or '', day=selected_day) }}">导出 CSV</a>
+    <a class="button secondary"
+      href="{{ url_for('export_attendance', person_id=selected_person_id or '', day=selected_day) }}">导出 CSV</a>
     <button class="button danger" type="button" data-clear-attendance>清空记录</button>
   </form>
+
+
 
   <div class="table-wrap">
     <table>
@@ -49,7 +53,9 @@
           <td>{{ row.message }}</td>
         </tr>
         {% else %}
-        <tr><td colspan="7" class="empty">没有符合条件的记录。</td></tr>
+        <tr>
+          <td colspan="7" class="empty">没有符合条件的记录。</td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
