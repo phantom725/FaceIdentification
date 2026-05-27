@@ -121,7 +121,7 @@ def create_app(test_config: dict | None = None) -> Flask:
     def api_register_face():
         person_id = request.form.get("person_id", type=int)
         if not person_id or db.get_person(app.config["DATABASE"], person_id) is None:
-            return jsonify({"ok": False, "error": "请选择有效人员"}), 400
+            return jsonify({"ok": False, "error": "请选择有效人员。"}), 400
         try:
             image_bytes = read_image_bytes()
             face_engine = engine()
